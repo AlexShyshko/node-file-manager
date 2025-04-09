@@ -1,0 +1,32 @@
+{
+    "name": "node-file-manager",
+    "version": "1.0.0",
+    "description": "Learning project. Description: https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/file-manager/assignment.md",
+    "engines": {
+        "node": "22.14.0"
+    },
+    "type": "module",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node src/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AlexShyshko/node-file-manager.git"
+    },
+    "keywords": [
+        "nodejs",
+        "node.js course",
+        "rss",
+        "rs school",
+        "rolling scopes school",
+        "file-manager",
+        "file manager"
+    ],
+    "author": "AlexShyshko",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/AlexShyshko/node-file-manager/pull/1"
+    },
+    "homepage": "https://github.com/AlexShyshko/node-file-manager#readme"
+}
