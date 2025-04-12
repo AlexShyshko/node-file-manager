@@ -9,7 +9,8 @@
     "main": "src/index.js",
     "scripts": {
         "start": "node src/index.js",
-        "test": "node src/index.js --username=AlexShyshko"
+        "test": "node src/index.js --username=AlexShyshko",
+        "test-multiple-arguments": "node src/index.js --username=ArgumentsTester --empty_arg --undefined_arg= --defined_arg=2025"
     },
     "repository": {
         "type": "git",
