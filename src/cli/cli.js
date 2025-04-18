@@ -6,7 +6,7 @@ class CommandLineInterface {
 
     startApplication = () => {
 
-        const parsedUserArguments = this.parseCliArgs(this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_OPERATOR);
+        const parsedUserArguments = this.parseCliArgs(this.CLI_ARGUMENTS, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_OPERATOR);
         const normalizedUserArguments = this.normalizeCliArguments(parsedUserArguments, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, '');
         this.setNormalizedUserArguments(normalizedUserArguments);
         this.setUserName(normalizedUserArguments.username);
@@ -80,7 +80,7 @@ class CommandLineInterface {
             case this.CLI_COMMANDS.DELETE_FILE:
                 return this.fmDeleteFileHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.OPERATION_SYSTEM:
-                return this.tempHandler.bind(null, command);
+                return this.osrPrintReportHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.HASH:
                 return this.tempHandler.bind(null, command);
             case this.CLI_COMMANDS.COMPRESS:
@@ -147,6 +147,14 @@ class CommandLineInterface {
         return this.FM.deleteFile(this.normalizeQuotedPath(filePathParameter));
     }
 
+    osrPrintReportHandler = (userArguments) => {
+
+        let parsedUserArguments = this.parseCliArgs((userArguments).split(' '), this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_OPERATOR);
+        let normalizedUserArguments = this.normalizeCliArguments(parsedUserArguments, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, '');
+        return this.OSR.printReport(normalizedUserArguments);
+    
+    }
+
     unknownCommandHandler = (command) => {
         return new Error(`${this.MC.colorize(this.MESSAGES.INVALID_INPUT, 'red')} ${this.MC.colorize(command, 'yellow')}`);
     }
@@ -207,13 +215,13 @@ class CommandLineInterface {
 
     }
 
-    parseCliArgs = (regexpTemplate, argumentOperator) => {
+    parseCliArgs = (argumentsArray, regexpArgumentMarker, argumentOperator) => {
 
         let cliArguments = {};
 
-        this.CLI_ARGUMENTS.forEach((argument, index, array) => {
+        argumentsArray.forEach((argument, index, array) => {
             
-            if (regexpTemplate.test(argument)) {
+            if (regexpArgumentMarker.test(argument)) {
 
                 let nameValuePair = argument.split(argumentOperator);
                 cliArguments[nameValuePair[0]] = nameValuePair[1] ?? null;
@@ -263,10 +271,6 @@ class CommandLineInterface {
     setMessages = (messages) => {
         this.MESSAGES = messages;
     }
-    
-    setMessagesOutside = (classInstance, messages) => {
-        classInstance.MESSAGES = messages;
-    }
 
     setCommands = (commands) => {
         this.CLI_COMMANDS = commands;
@@ -280,17 +284,20 @@ class CommandLineInterface {
         this.MC = messageColorizer;
     }
 
-    setMessageColorizerOutside = (classInstance, messageColorizer) => {
-        classInstance.MC = messageColorizer;
-    }
-
-
     setNavigator = (navigator) => {
         this.NV = navigator;
     }
     
     setFileManager = (fileManager) => {
         this.FM = fileManager;
+    }
+
+    setOperatingSystemReport = (operatingSystemReport) => {
+        this.OSR = operatingSystemReport;
+    }
+
+    setClassPropertyValueOutside = (classInstance, classPropertyName, propertyValue) => {
+        classInstance[classPropertyName] = propertyValue;
     }
 
 }
