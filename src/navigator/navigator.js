@@ -30,21 +30,20 @@ class Navigator {
 
     goDirectory = async (directoryPathParameter) => {
 
-        let normalizedPath = this.normalizeQuotedPath(directoryPathParameter);
         let operationResult;
 
-        await access(normalizedPath)
+        await access(directoryPathParameter)
 		.then(async () => {
             
-            await stat(normalizedPath).then(
+            await stat(directoryPathParameter).then(
 
                 (promiseResponse) => {
 
                     if (promiseResponse.isDirectory()) {
-                        this.setCurrentWorkingDirectory(normalizedPath);
+                        this.setCurrentWorkingDirectory(directoryPathParameter);
                     } else {
 
-                        let absolutePath = path.resolve(normalizedPath);
+                        let absolutePath = path.resolve(directoryPathParameter);
                         operationResult = new Error(`${this.MC.colorize(absolutePath, 'yellow')} ${this.MC.colorize('is not a directory.', 'red')}`);
 
                     }
@@ -130,14 +129,6 @@ class Navigator {
 
     }
 
-    normalizeQuotedPath = (pathParameter) => {
-        
-        let quotedStringTemplate = /^"|"$/g;
-        let unquotedPath = pathParameter.replace(quotedStringTemplate, '');
-        return unquotedPath.trim();
-
-    }
-
     setStartingWorkingDirectory = () => {
 
         let startingWorkingDirectory;
@@ -166,13 +157,10 @@ class Navigator {
         process.chdir(directoryPath);
     }
 
-    setMessages = (messages) => {
-        this.MESSAGES = messages;
-    }
-
     setMessageColorizer = (messageColorizer) => {
         this.MC = messageColorizer;
     }
+
 
 }
 

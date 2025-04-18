@@ -1,7 +1,10 @@
+import { Transform } from 'stream';
+
 class MessageColorizer {
 
     constructor() {
         this.ESCAPE_CHARACTER_DEFAULT = this.escapeCharacterWrapper('0');
+        this.TRANSFORM_CHUNK_COLOR = 'white';
     }
 
     colorize = (message, attribute) => {
@@ -89,6 +92,36 @@ class MessageColorizer {
         return JSON.stringify(object, (key, value) => {
             return value === undefined ? "undefined" : value;
         }, '\t');
+    }
+
+    setTransformChunkColor = (color) => {
+        this.TRANSFORM_CHUNK_COLOR = color;
+    }
+
+    getTransformStreamColorizer = (color = this.TRANSFORM_CHUNK_COLOR) => {
+
+        return new Transform({
+            transform: (chunk, encoding, callback) => {
+
+                try {
+
+                    let stringifiedChunk = String(chunk);
+
+                    let asciiChars = stringifiedChunk.match(/[\x20-\x7E]/g);
+                    let newLineChars = /(\r\n|\n|\r)/g;
+                    let is80PercentAscii = asciiChars && asciiChars.length / stringifiedChunk.replace(newLineChars, '').length > 0.8;
+                    let asciiAlert = `${this.colorize('The data contains less than 80% ASCII characters. It seems that this is not a text data. But the transform stream will continue anyway.\n', 'red')}`;
+                    is80PercentAscii ? null : process.stdout.write(asciiAlert);
+
+                    callback(null, `${this.colorize(stringifiedChunk, color)}`);
+
+                } catch(e) {
+                    throw e;
+                }
+                
+            },
+        });
+
     }
 
 }

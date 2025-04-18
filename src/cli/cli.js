@@ -32,7 +32,7 @@ class CommandLineInterface {
                         this.commandResponseHandler(promiseError);
                     }
             
-                )
+                );
 
             } else {
                 this.commandResponseHandler(response);
@@ -65,20 +65,20 @@ class CommandLineInterface {
                 return this.navGoDirectoryHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.PRINT_DIRECTORY_CONTENT:
                 return this.navPrintContentHandler;
-            case this.CLI_COMMANDS.READ_AND_WRITE_FILE_IN_CONSOLE:
-                return this.tempHandler.bind(null, command);
+            case this.CLI_COMMANDS.READ_AND_PRINT_CONTENT_IN_CONSOLE:
+                return this.fmReadAndPrintHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.CREATE_FILE:
-                return this.tempHandler.bind(null, command);
+                return this.fmCreateFileHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.CREATE_DIRECTORY:
-                return this.tempHandler.bind(null, command);
+                return this.fmCreateDirectoryHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.RENAME_FILE:
-                return this.tempHandler.bind(null, command);
+                return this.fmRenameFileHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.COPY_FILE:
-                return this.tempHandler.bind(null, command);
+                return this.fmCopyFileHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.CUT_FILE:
-                return this.tempHandler.bind(null, command);
+                return this.fmCutFileHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.DELETE_FILE:
-                return this.tempHandler.bind(null, command);
+                return this.fmDeleteFileHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.OPERATION_SYSTEM:
                 return this.tempHandler.bind(null, command);
             case this.CLI_COMMANDS.HASH:
@@ -103,11 +103,48 @@ class CommandLineInterface {
     }
 
     navGoDirectoryHandler = async (directoryPathParameter) => {
-        return await this.NV.goDirectory(directoryPathParameter);
+        return await this.NV.goDirectory(this.normalizeQuotedPath(directoryPathParameter));
     }
 
     navPrintContentHandler = async () => {
         return await this.NV.printContent();
+    }
+
+    fmReadAndPrintHandler = (filePathParameter) => {
+        return this.FM.readAndPrint(this.normalizeQuotedPath(filePathParameter));
+    }
+
+    fmCreateFileHandler = (fileName) => {
+        return this.FM.createFileOrDirectory(this.normalizeQuotedPath(fileName), 'file');
+    }
+
+    fmCreateDirectoryHandler = (directoryName) => {
+        return this.FM.createFileOrDirectory(this.normalizeQuotedPath(directoryName), 'directory');
+    }
+
+    fmRenameFileHandler = (userArguments) => {
+
+        let parsedUserArguments = this.parseUserArguments(userArguments);
+        return this.FM.renameFile(parsedUserArguments[0], parsedUserArguments[1]);
+
+    }
+
+    fmCopyFileHandler = (userArguments) => {
+
+        let parsedUserArguments = this.parseUserArguments(userArguments);
+        return this.FM.copyFile(parsedUserArguments[0], parsedUserArguments[1]);
+
+    }
+
+    fmCutFileHandler = (userArguments) => {
+
+        let parsedUserArguments = this.parseUserArguments(userArguments);
+        return this.FM.cutFile(parsedUserArguments[0], parsedUserArguments[1]);
+
+    }
+
+    fmDeleteFileHandler = (filePathParameter) => {
+        return this.FM.deleteFile(this.normalizeQuotedPath(filePathParameter));
     }
 
     unknownCommandHandler = (command) => {
@@ -119,7 +156,7 @@ class CommandLineInterface {
         if (response instanceof Error) {
 
             console.log(this.MC.colorize(this.MESSAGES.OPERATION_FAILED, 'red'));
-            console.log(response.message)
+            console.log(response.message);
 
         } else {
 
@@ -129,6 +166,44 @@ class CommandLineInterface {
         }
 
         this.printPath();
+
+    }
+
+    normalizeQuotedPath = (pathParameter) => {
+        
+        let quotedStringTemplate = /^".*"$/;
+        let replaceTemplate = /^"|"$/g;
+
+        if (quotedStringTemplate.test(pathParameter)) {
+
+            let unquotedPath = pathParameter.replace(replaceTemplate, '');
+            return unquotedPath;
+
+        } else {
+            return pathParameter;
+        }
+
+    }
+
+    parseUserArguments = (userArguments) => {
+
+        let parsedArguments = [];
+        let argumentTemplate = /"([^"]*)"|(\S+)/g;
+        let match;
+
+        while ((match = argumentTemplate.exec(userArguments)) !== null) {
+
+            let isDefined;
+
+            if (match[1] !== undefined) {
+                parsedArguments.push(match[1]);
+            } else if (match[2] !== undefined) {
+                parsedArguments.push(match[2]);
+            }
+
+        }
+
+        return parsedArguments;
 
     }
 
@@ -188,6 +263,10 @@ class CommandLineInterface {
     setMessages = (messages) => {
         this.MESSAGES = messages;
     }
+    
+    setMessagesOutside = (classInstance, messages) => {
+        classInstance.MESSAGES = messages;
+    }
 
     setCommands = (commands) => {
         this.CLI_COMMANDS = commands;
@@ -200,6 +279,11 @@ class CommandLineInterface {
     setMessageColorizer = (messageColorizer) => {
         this.MC = messageColorizer;
     }
+
+    setMessageColorizerOutside = (classInstance, messageColorizer) => {
+        classInstance.MC = messageColorizer;
+    }
+
 
     setNavigator = (navigator) => {
         this.NV = navigator;
