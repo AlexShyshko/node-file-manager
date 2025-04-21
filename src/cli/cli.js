@@ -79,10 +79,14 @@ class CommandLineInterface {
                 return this.fmCutFileHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.DELETE_FILE:
                 return this.fmDeleteFileHandler.bind(null, userArguments);
-            case this.CLI_COMMANDS.OPERATION_SYSTEM:
+            case this.CLI_COMMANDS.OPERATING_SYSTEM:
                 return this.osrPrintReportHandler.bind(null, userArguments);
+            case this.CLI_COMMANDS.HASH_ALGORITHMS:
+                return this.htPrintHashAlgorithmsHandler;
+            case this.CLI_COMMANDS.HASH_ENCODINGS:
+                return this.htPrintHashEncodingsHandler;
             case this.CLI_COMMANDS.HASH:
-                return this.tempHandler.bind(null, command);
+                return this.htPrintHashHandler.bind(null, userArguments);
             case this.CLI_COMMANDS.COMPRESS:
                 return this.tempHandler.bind(null, command);
             case this.CLI_COMMANDS.DECOMPRESS:
@@ -149,10 +153,27 @@ class CommandLineInterface {
 
     osrPrintReportHandler = (userArguments) => {
 
-        let parsedUserArguments = this.parseCliArgs((userArguments).split(' '), this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_OPERATOR);
-        let normalizedUserArguments = this.normalizeCliArguments(parsedUserArguments, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, '');
-        return this.OSR.printReport(normalizedUserArguments);
+        let parsedCliArguments = this.parseCliArgs((userArguments).split(' '), this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_OPERATOR);
+        let normalizedCliArguments = this.normalizeCliArguments(parsedCliArguments, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, '');
+        return this.OSR.printReport(normalizedCliArguments);
     
+    }
+
+    htPrintHashAlgorithmsHandler = () => {
+        return this.HT.printHashAlgorithms();
+    }
+
+    htPrintHashEncodingsHandler = () => {
+        return this.HT.printHashEncodings();
+    }
+
+    htPrintHashHandler = (userArguments) => {
+
+        let parsedUserArguments = this.parseUserArguments(userArguments);
+        let parsedCliArguments = this.parseCliArgs(parsedUserArguments.slice(1), this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_OPERATOR);
+        let normalizedCliArguments = this.normalizeCliArguments(parsedCliArguments, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_MARKER, '');
+        return this.HT.printHash(parsedUserArguments[0], normalizedCliArguments);
+
     }
 
     unknownCommandHandler = (command) => {
@@ -294,6 +315,10 @@ class CommandLineInterface {
 
     setOperatingSystemReport = (operatingSystemReport) => {
         this.OSR = operatingSystemReport;
+    }
+
+    setHashTool = (hashTool) => {
+        this.HT = hashTool;
     }
 
     setClassPropertyValueOutside = (classInstance, classPropertyName, propertyValue) => {

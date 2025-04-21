@@ -12,7 +12,8 @@ class MessageColorizer {
         let colorCode = this.mapAttribute(attribute);
         let escapeCharacter = this.escapeCharacterWrapper(colorCode);
         let stringifiedObject = this.isObject(message) ? this.objectNormalizer(message) : message;
-        return `${escapeCharacter}${stringifiedObject}${this.ESCAPE_CHARACTER_DEFAULT}`;
+        let coloredString = `${escapeCharacter}${stringifiedObject}${this.ESCAPE_CHARACTER_DEFAULT}`;
+        return coloredString;
 
     }
 

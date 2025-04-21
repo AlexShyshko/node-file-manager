@@ -23,8 +23,10 @@ const CLI_COMMANDS = {
     CUT_FILE: 'mv',
     DELETE_FILE: 'rm',
     // OS info
-    OPERATION_SYSTEM: 'os',
+    OPERATING_SYSTEM: 'os',
     // Hash
+    HASH_ALGORITHMS: 'hashalg',
+    HASH_ENCODINGS: 'hashenc',
     HASH: 'hash',
     // Compress
     COMPRESS: 'compress',
@@ -41,6 +43,8 @@ const CLI_ARGUMENTS_CREDENTIALS = {
     ARGUMENT_VALUE_HOME_DIRECTORY: 'homedir',
     ARGUMENT_VALUE_SYSTEM_USER_NAME: 'username',
     ARGUMENT_VALUE_CPU_ARCHITECTURE: 'architecture',
+    ARGUMENT_VALUE_ALGORITHM: 'alg',
+    ARGUMENT_VALUE_ENCODING: 'enc',
 }
 
 const COLORIZER_PROPERTIES = {
