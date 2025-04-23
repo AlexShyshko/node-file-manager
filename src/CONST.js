@@ -1,3 +1,5 @@
+const NODE_VERSION = '22.14.0';
+
 const MESSAGES = {
     GREETING_MESSAGE: 'Welcome to the File Manager',
     FAREWELL_MESSAGE: 'Thank you for using File Manager',
@@ -9,11 +11,15 @@ const MESSAGES = {
 };
 
 const CLI_COMMANDS = {
+    // Help
+    HELP: 'help',
+    // Exit
     EXIT: '.exit',
     // Navigation
     GO_UP_FROM_DIRECTORY: 'up',
     GO_TO_DIRECTORY: 'cd',
     PRINT_DIRECTORY_CONTENT: 'ls',
+    GO_TO_APPLICATION_HOME_DIRECTORY: 'hm',
     // Files operation
     READ_AND_PRINT_CONTENT_IN_CONSOLE: 'cat',
     CREATE_FILE: 'add',
@@ -23,15 +29,16 @@ const CLI_COMMANDS = {
     CUT_FILE: 'mv',
     DELETE_FILE: 'rm',
     // OS info
+    OPERATING_SYSTEM_SUPPORTED_ARGUMENTS: 'osarg',
     OPERATING_SYSTEM: 'os',
     // Hash
+    HASH_SUPPORTED_ARGUMENTS: 'hasharg',
     HASH_ALGORITHMS: 'hashalg',
     HASH_ENCODINGS: 'hashenc',
     HASH: 'hash',
     // Compress
     COMPRESS: 'compress',
     DECOMPRESS: 'decompress',
-
 };
 
 const CLI_ARGUMENTS_CREDENTIALS = {
@@ -52,6 +59,7 @@ const COLORIZER_PROPERTIES = {
 }
 
 export {
+    NODE_VERSION,
     MESSAGES,
     CLI_COMMANDS,
     CLI_ARGUMENTS_CREDENTIALS,

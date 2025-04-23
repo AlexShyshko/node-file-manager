@@ -74,6 +74,17 @@ class OperatingSystemReport {
 
     }
 
+    printOptionalArguments = () => {
+        
+        let supportedOptionalArguments = this.getOptionalArguments();
+        console.log(`${this.MC.colorize('Supported optional arguments:', 'green')} ${this.MC.colorize(supportedOptionalArguments.join(', '), 'yellow')}`);
+
+    }
+
+    getOptionalArguments = () => {
+        return [this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_VALUE_END_OF_LINE, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_VALUE_CPUS, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_VALUE_HOME_DIRECTORY, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_VALUE_SYSTEM_USER_NAME, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_VALUE_CPU_ARCHITECTURE];
+    }
+
     unknownArgumentHandler = (argument) => {
         return new Error(`${this.MC.colorize(this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_INVALID, 'red')} ${this.MC.colorize(argument, 'yellow')}`);
     }

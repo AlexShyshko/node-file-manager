@@ -129,6 +129,13 @@ class Navigator {
 
     }
 
+    goHome = async () => {
+
+        let homePath = path.join(import.meta.dirname, '../FILES FOR PRESENTATION/RESULT');
+        return await this.goDirectory(homePath);
+
+    }
+
     setStartingWorkingDirectory = () => {
 
         let startingWorkingDirectory;

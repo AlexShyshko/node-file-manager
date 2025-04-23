@@ -3,8 +3,10 @@ import { Transform } from 'stream';
 class MessageColorizer {
 
     constructor() {
+
         this.ESCAPE_CHARACTER_DEFAULT = this.escapeCharacterWrapper('0');
         this.TRANSFORM_CHUNK_COLOR = 'white';
+        
     }
 
     colorize = (message, attribute) => {

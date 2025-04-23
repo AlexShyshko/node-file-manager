@@ -11,6 +11,13 @@ class HashTool {
 
     }
 
+    printOptionalArguments = () => {
+        
+        let supportedOptionalArguments = this.getOptionalArguments();
+        console.log(`${this.MC.colorize('Supported optional arguments:', 'green')} ${this.MC.colorize(supportedOptionalArguments.join(', '), 'yellow')}`);
+
+    }
+
     printHashAlgorithms = () => {
 
         let supportedAlgorithms = getHashes();
@@ -158,6 +165,10 @@ class HashTool {
 
         }
 
+    }
+
+    getOptionalArguments = () => {
+        return [this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_VALUE_ALGORITHM, this.CLI_ARGUMENTS_CREDENTIALS.ARGUMENT_VALUE_ENCODING];
     }
 
     getHashEncodings = () => {

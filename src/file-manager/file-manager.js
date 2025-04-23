@@ -104,7 +104,7 @@ class FileManager {
                             let successMessage = `${this.MC.colorize(absolutePath, 'yellow')} ${this.MC.colorize('has been added.', 'green')}`;
                             let unifiedCallback = this.getUnifiedCallback(reject, resolve.bind(null, successMessage));
                             
-                            switch(type) {
+                            switch (type) {
 
                                 case 'file':
 
