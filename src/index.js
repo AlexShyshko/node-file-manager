@@ -1,15 +1,7 @@
+import { CLI } from './TOOLS.js';
 
-
-const runFileManager = async () => {
-
-    try {
-
-
-
-    } catch(e) {
-        console.log(e);
-    }
-
+try {
+    CLI.startApplication();
+} catch(e) {
+    console.log(e);
 }
-
-runFileManager();
