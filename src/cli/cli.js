@@ -403,7 +403,7 @@ class CommandLineInterface {
             ${this.MC.colorize('hasharg', 'blue_bgc')}
 
             ${this.MC.colorize('hashalg', 'yellow')}
-            ${this.MC.colorize('prints all supported hash algotithms to the console', 'green')}
+            ${this.MC.colorize('prints all supported hash algorithms to the console', 'green')}
             ${this.MC.colorize('hashalg', 'blue_bgc')}
 
             ${this.MC.colorize('hashenc', 'yellow')}
